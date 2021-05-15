@@ -86,9 +86,8 @@ class RegisterController extends Controller
         $new->address = $request['address'];
         $new->save();
 
-        return redirect()->back()->withErrors([
-                 'first_name' => 'This Wallet Address Store In Our Record & Thanks.',
-             ]);
+                     return redirect()->route('confirm');
+
     }
 
     public function getformsignupref($ref)
@@ -119,13 +118,15 @@ class RegisterController extends Controller
         $new_referral_record->pick_id_of_makeaccount = $pick_id_of_makeaccount;
         $new_referral_record->pick_id_of_ref = $pick_id_of_ref;
         $new_referral_record->save();
-        $update_bal_of_ref_user = User::where('id',$pick_id_of_ref)->update(['balance' => 500]);
-         return redirect()->back()->withErrors([
-                 'first_name' => 'This Wallet Address Store In Our Record & Thanks.',
-             ]);
+        $pick_bal_of_ref = $checkref->balance;
+        $make_profit_of_ref = $pick_bal_of_ref + 500;
+
+        $update_bal_of_ref_user = User::where('id',$pick_id_of_ref)->update(['balance' => $make_profit_of_ref]);
+                      return redirect()->route('confirm');
+
     }else{
         return redirect()->back()->withErrors([
-                'first_name' => 'Your Referral Wallet Address Not Found In Our Record.',
+                'first_name' => 'Your Referral Link Address Not Found In Our Record.',
             ]);
     }
 
@@ -142,9 +143,8 @@ class RegisterController extends Controller
         $new->address = $request['address'];
         $new->save();
 
-        return redirect()->back()->withErrors([
-                 'first_name' => 'This Wallet Address Store In Our Record & Thanks.',
-             ]);
+                     return redirect()->route('confirm');
+
     }
 }
 

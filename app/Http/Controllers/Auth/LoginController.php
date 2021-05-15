@@ -55,4 +55,37 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+
+    public function resetaddress()
+    {
+        return view('auth.passwords.email');
+    }
+
+    public function resetaddresssave(Request $request)
+    {
+        $id = $request['id'];
+        $address = $request['address'];
+        $pass_check = User::where('id' , $id)->first();
+        $address_check = User::where('address' , $address)->first();
+        if (!$pass_check) {
+             return redirect()->back()->withInput($request->only('id'))->withErrors([
+                'id' => 'We could not find you in our database.',
+            ]);
+        }
+        if ($address_check) {
+                 return redirect()->back()->withInput($request->only('id'))->withErrors([
+                'first_name' => 'Please Change We find your address in our database.',
+            ]);
+            }
+        else{
+            $update_pass = User::where('id',$id)->update(['address' => $address]);
+             return redirect()->route('confirm');
+        }
+    }
+
+    public function confirm()
+    {
+        return view('auth.verify');
+    }
 }

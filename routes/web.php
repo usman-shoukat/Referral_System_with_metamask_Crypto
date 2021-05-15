@@ -21,7 +21,10 @@ Auth::routes();
 
 Route::post('/signin', 'Auth\LoginController@signin')->name('signin');
 Route::post('/signup', 'Auth\RegisterController@signup')->name('signup');
+Route::get('/address/reset', 'Auth\LoginController@resetaddress')->name('address.request');
+Route::get('/confirm', 'Auth\LoginController@confirm')->name('confirm');
 
+Route::post('/address/reset', 'Auth\LoginController@resetaddresssave')->name('reset.pass');
 Route::get('/register/{ref}', 'Auth\RegisterController@getformsignupref')->name('form.signup.ref');
 Route::post('/signup/{ref}', 'Auth\RegisterController@signupref')->name('signup.ref');
 Route::get('/home', 'HomeController@index')->name('home');
