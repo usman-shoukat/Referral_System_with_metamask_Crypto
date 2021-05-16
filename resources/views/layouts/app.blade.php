@@ -35,6 +35,15 @@
   <script src="{{asset('public/assets/vendor/chart.js/dist/Chart.extension.js')}}"></script>
   <!-- Argon JS -->
   <script src="{{asset('public/assets/js/argon.js?v=1.2.0')}}"></script>
+   <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+
+    <!-- This is our example code -->
+    <script type="text/javascript" src="{{asset('public/example.js')}}"></script>
+    <script type="text/javascript" src="{{asset('public/.prettierrc.js')}}"></script>
 </body>
 
 </html>

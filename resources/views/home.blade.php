@@ -1,7 +1,25 @@
-@extends('layouts.app')
 
-@section('content')
-<!-- Main content -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
+  <!-- Favicon -->
+  <link rel="icon" href="{{asset('public/assets/img/brand/favicon.png')}}" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="{{asset('public/assets/vendor/nucleo/css/nucleo.css')}}" type="text/css">
+  <link rel="stylesheet" href="{{asset('public/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}" type="text/css">
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="{{asset('public/assets/css/argon.css?v=1.2.0')}}" type="text/css">
+</head>
+<body>
+
   <div class="main-content" id="panel">
     <!-- Header -->
     <div class="header bg-primary pb-6">
@@ -11,14 +29,10 @@
             <div class="col-lg-6 col-7">
  <a  class="navbar-brand" href="javascript:void(0)">
           <img src="public/assets/img/brand/white.png" width="100px;" class="navbar-brand-img" alt="...">
-        </a>              <nav  aria-label="breadcrumb" class=" d-md-inline-block ml-md-4">
-                <ol  class="breadcrumb breadcrumb-links breadcrumb-dark">
-                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-link"></i></a></li>
-                  <li class="breadcrumb-item"><a href="#">Connect Wallet</a></li>
-
-                </ol>
-              </nav>
-            </div>
+        </a>             
+       </div>
+       
+            
             <div class="col-lg-6 col-5 text-right">
 <ul class="navbar-nav align-items-center   ml-auto ml-md-0 " style="float: right;">
             <li class="nav-item ">
@@ -36,6 +50,21 @@
 
           </ul>            </div>
           </div>
+           <nav id="prepare" style="width:20%;"  aria-label="breadcrumb" class="  ">
+                <ol   class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#" ><i class="fas fa-link"></i></a></li>
+                  <li class="breadcrumb-item" id="btn-connect"><a >Connect Wallet</a></li>
+
+                </ol>
+                
+              </nav>
+               <nav   id="connected"  style="display: none;width:25%;" aria-label="breadcrumb" class="  ">
+               <ol      class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-link"></i></a></li>
+                  <li class="breadcrumb-item" id="btn-disconnect"><a >Disconnect Wallet</a></li>
+
+                </ol>
+                </nav>
           <!-- Card stats -->
           <div class="row">
             <div class="col-xl-3 col-md-6">
@@ -140,8 +169,16 @@
                 </div>
               </div>
             </div>
-            <div class="card-body">
-                  <h5 class="h3 text-white mb-0">https://fontawesome.com/icons/wallet?ref=0x77D709586Bd3DCa8F2b00064A78936B1c030273D</h5>
+            <div  class="card-body" id="accounts">
+            <div id="templates" style="display: none">
+      <template  id="template-balance">
+        <tr>
+          <th class="address"></th>
+          <td class="balance"></td>
+        </tr>
+      </template>
+    </div>
+        <h5 class="h3 text-white mb-0">https://fontawesome.com/icons/wallet?ref={{auth()->user()->address}}</h5>
             </div>
           </div>
         </div>
@@ -281,5 +318,132 @@
       </footer>
     </div>
   </div>
-  
-@endsection
+ <!-- Argon Scripts -->
+  <!-- Core -->
+  <script src="{{asset('public/assets/vendor/jquery/dist/jquery.min.js')}}"></script>
+  <script src="{{asset('public/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{asset('public/assets/vendor/js-cookie/js.cookie.js')}}"></script>
+  <script src="{{asset('public/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js')}}"></script>
+  <script src="{{asset('public/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js')}}"></script>
+  <!-- Optional JS -->
+  <script src="{{asset('public/assets/vendor/chart.js/dist/Chart.min.js')}}"></script>
+  <script src="{{asset('public/assets/vendor/chart.js/dist/Chart.extension.js')}}"></script>
+  <!-- Argon JS -->
+  <script src="{{asset('public/assets/js/argon.js?v=1.2.0')}}"></script>
+   <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+
+    <!-- This is our example code -->
+    <script type="text/javascript" src="{{asset('public/example.js')}}"></script>
+    <script type="text/javascript" src="{{asset('public/.prettierrc.js')}}"></script>
+</body>
+
+</html>
+
+<html>
+  <head>
+    <title>Web3modal example written in vanilla JavaScript and HTML</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Get some bootstrap default styles -->
+   
+  </head>
+  <body>
+    <!-- Construct a Bootstrap layout -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+         
+
+          <div class="alert alert-danger" id="alert-error-https" style="display: none">
+          </div>
+
+          <div id="prepare">
+            <button class="btn btn-primary" id="btn-connect">
+              Connect wallet
+            </button>
+          </div>
+
+          <div id="connected" style="display: none">
+
+            <button class="btn btn-primary" id="btn-disconnect">
+              Disconnect wallet
+            </button>
+
+            <hr>
+
+            <div id="network">
+              <p>
+                <strong>Connected blockchain:</strong> <span id="network-name"></span>
+              </p>
+
+              <p>
+                <strong>Selected account:</strong> <span id="selected-account"></span>
+              </p>
+
+            </div>
+
+            <hr>
+
+            <h3>All account balances</h3>
+
+            <table class="table table-listing">
+              <thead>
+                <th>Address</th>
+                <th>ETH balance</th>
+              </thead>
+
+              <tbody id="accounts">
+              </tbody>
+            </table>
+
+            <p>Please try to switch between different accounts in your wallet if your wallet supports this functonality.</p>
+
+          </div>
+
+          <br>
+
+          <div class="well">
+            <p class="text-muted">See also the <a href="https://web3modal.com/">TypeScript and React example application</a></p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- We use simple <template> templating for the example -->
+    <div id="templates" style="display: none">
+      <template id="template-balance">
+        <tr>
+          <th class="address"></th>
+          <td class="balance"></td>
+        </tr>
+      </template>
+    </div>
+
+    <!--
+
+      Use unpkg CDN to load all NPM packages to vanilla Javascript - read more at http://unpkg.com
+
+      On your deployment, you properly either want to use a preprocessing tool like webpack
+      to include these files, or extract NPM archives and manually host the files inside.
+
+      TODO: Pin down all versions.
+
+    -->
+
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+
+    <!-- This is our example code -->
+    <script type="text/javascript" src="./example.js"></script>
+  </body>
+</html>
+
