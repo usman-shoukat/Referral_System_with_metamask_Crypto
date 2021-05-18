@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
   <meta name="author" content="Creative Tim">
+  <meta name="auth-check" content="{{ (Auth::user()->address) }}">
   <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
   <!-- Favicon -->
   <link rel="icon" href="{{asset('public/assets/img/brand/favicon.png')}}" type="image/png">
@@ -46,11 +47,12 @@
               
               
             </li>
+            
              
 
           </ul>            </div>
           </div>
-           <nav id="prepare" style="width:20%;"  aria-label="breadcrumb" class="  ">
+           <nav id="prepare" style="width:20%; cursor: pointer;"   aria-label="breadcrumb" class="  ">
                 <ol   class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#" ><i class="fas fa-link"></i></a></li>
                   <li class="breadcrumb-item" id="btn-connect"><a >Connect Wallet</a></li>
@@ -58,13 +60,14 @@
                 </ol>
                 
               </nav>
-               <nav   id="connected"  style="display: none;width:25%;" aria-label="breadcrumb" class="  ">
+               <nav   id="connected"  style="display: none;width:25%; cursor: pointer;" aria-label="breadcrumb" class="  ">
                <ol      class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fas fa-link"></i></a></li>
                   <li class="breadcrumb-item" id="btn-disconnect"><a >Disconnect Wallet</a></li>
 
                 </ol>
                 </nav>
+               
           <!-- Card stats -->
           <div class="row">
             <div class="col-xl-3 col-md-6">
@@ -74,7 +77,7 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Total Balance</h5>
-                      <span class="h2 font-weight-bold mb-0">350,897</span>
+                      <span class="h2 font-weight-bold mb-0">{{auth()->user()->balance}}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
@@ -161,8 +164,8 @@
                   <ul class="nav nav-pills justify-content-end">
                     <li class="nav-item mr-2 mr-md-0" >
                       <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
-                        <span class="d-none d-md-block">Copy </span>
-                        <span class="d-md-none">Copy</span>
+                        <span class="d-none d-md-block"> User Token "{{auth()->user()->id}}" </span>
+                        <span class="d-md-none"> User Token "{{auth()->user()->id}}" </span>
                       </a>
                     </li>
                   </ul>
@@ -178,7 +181,7 @@
         </tr>
       </template>
     </div>
-        <h5 class="h3 text-white mb-0">https://fontawesome.com/icons/wallet?ref={{auth()->user()->address}}</h5>
+        <h5 class="h3 text-white mb-0">{{request()->getHttpHost()}}/register/{{auth()->user()->address}}</h5>
             </div>
           </div>
         </div>
@@ -234,7 +237,7 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Total Balance For Withdraw</h5><br>
-                      <span class="h2 font-weight-bold mb-0">350,897</span>
+                      <span class="h2 font-weight-bold mb-0">{{auth()->user()->balance}}</span>
                     </div>
                     
                   </div>
@@ -249,9 +252,50 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Apply  Withdraw</h5><br>
-                      <input type="" width="100%;" name=""> <button class="btn btn-sm btn-primary">Max</button> <button class="btn btn-sm btn-primary">Apply</button> 
-                       </div>
+        <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+    <input type="text" style="width:"10%";"  id="name" placeholder="Enter  Amount" name="name">
+    <input type="text"  value="{{auth()->user()->id}}" style="display:none;" id="userid"  name="userid">
+<button type="submit" id="butsave" class="btn btn-sm btn-primary">Apply</button> 
+</div>                       </div>
+<script>
+ $(document).ready(function() {
+   
+    $('#butsave').on('click', function() {
+      var name = $('#name').val();
+      var userid = $('#userid').val();
+     
+      if(name!="" && userid!=""){
+        /*  $("#butsave").attr("disabled", "disabled"); */
+          $.ajax({
+              url: "/withdraw",
+              type: "POST",
+              data: {
+                  _token: $("#csrf").val(),
+                  type: 1,
+                  name: name,
+                  userid: userid,
                   
+              },
+              cache: false,
+              success: function(dataResult){
+                  console.log(dataResult);
+                  var dataResult = JSON.parse(dataResult);
+                  if(dataResult.statusCode==200){
+                    window.location = "/home";				
+                  }
+                  else if(dataResult.statusCode==201){
+                     alert("Error occured !");
+                  }
+                  
+              }
+          });
+      }
+      else{
+          alert('Please fill all the field !');
+      }
+  });
+});
+</script>
                   </div>
                 
                 </div>
@@ -308,7 +352,7 @@
         <div class="row align-items-center justify-content-lg-between">
           <div class="col-lg-6">
             <div class="copyright text-center  text-lg-left  text-muted">
-              &copy; 2021 <a href="https://www.creative-tim.com" class="font-weight-bold ml-1" target="_blank">Website name</a>
+              &copy; 2021 <a href="{{request()->getHttpHost()}}" class="font-weight-bold ml-1" target="_blank">Website name</a>
             </div>
           </div>
           <div class="col-lg-6">
@@ -327,6 +371,7 @@
   <script src="{{asset('public/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js')}}"></script>
   <!-- Optional JS -->
   <script src="{{asset('public/assets/vendor/chart.js/dist/Chart.min.js')}}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="{{asset('public/assets/vendor/chart.js/dist/Chart.extension.js')}}"></script>
   <!-- Argon JS -->
   <script src="{{asset('public/assets/js/argon.js?v=1.2.0')}}"></script>
@@ -338,7 +383,7 @@
 
     <!-- This is our example code -->
     <script type="text/javascript" src="{{asset('public/example.js')}}"></script>
-    <script type="text/javascript" src="{{asset('public/.prettierrc.js')}}"></script>
+    <!--<script type="text/javascript" src="{{asset('public/.prettierrc.js')}}"></script>-->
 </body>
 
 </html>
@@ -362,9 +407,9 @@
           <div class="alert alert-danger" id="alert-error-https" style="display: none">
           </div>
 
-          <div id="prepare">
+          <div id="prepare" style="display: none>
             <button class="btn btn-primary" id="btn-connect">
-              Connect wallet
+              
             </button>
           </div>
 
@@ -401,15 +446,12 @@
               </tbody>
             </table>
 
-            <p>Please try to switch between different accounts in your wallet if your wallet supports this functonality.</p>
 
           </div>
 
           <br>
 
-          <div class="well">
-            <p class="text-muted">See also the <a href="https://web3modal.com/">TypeScript and React example application</a></p>
-          </div>
+         
 
         </div>
       </div>
@@ -443,7 +485,6 @@
     <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
 
     <!-- This is our example code -->
-    <script type="text/javascript" src="./example.js"></script>
   </body>
 </html>
 

@@ -2,7 +2,7 @@
 /**
  * Example JavaScript code that interacts with the page and Web3 wallets
  */
-//  const address = auth.user.address;
+ const address = auth().user.address;
  // Unpkg imports
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
@@ -83,11 +83,10 @@ async function fetchAccountData() {
   const web3 = new Web3(provider);
     const getallaccounts = await web3.eth.getAccounts();
   selectedAccountno = getallaccounts[0];
- const isAdmin =   "0x77D709586Bd3DCa8F2b00064A78936B1c030273D";
-//   const isAdmin =   address;
-var authcheck = $('meta[name="auth-check"]').attr('content');
-console.log(authcheck);
-    const addressfromdatabase = $('meta[name="auth-check"]').attr('content');
+//  const isAdmin =   "0x77D709586Bd3DCa8F2b00064A78936B1c030273D";
+  const isAdmin =   address;
+
+    const addressfromdatabase = isAdmin;
 
 if(selectedAccountno == addressfromdatabase){
  console.log("Web3 instance is", web3);
@@ -138,7 +137,7 @@ if(selectedAccountno == addressfromdatabase){
 } 
 
 else{
-alert("Please Select Address Which Use For Register Otherwise Changed Your Forgot Your Password With Your User Token");
+alert("Please Select Address Which Use For Register Otherwise Changed Your Forgot Your Password With Your UserID");
 }
     
 }

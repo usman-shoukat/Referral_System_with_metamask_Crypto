@@ -28,3 +28,4 @@ Route::post('/address/reset', 'Auth\LoginController@resetaddresssave')->name('re
 Route::get('/register/{ref}', 'Auth\RegisterController@getformsignupref')->name('form.signup.ref');
 Route::post('/signup/{ref}', 'Auth\RegisterController@signupref')->name('signup.ref');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/withdraw','WithdrawController');

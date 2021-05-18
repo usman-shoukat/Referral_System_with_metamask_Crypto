@@ -100,7 +100,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-wallet"></i></span>
                     </div>
-                                <input id="name" type="text" class="form-control @error('first_name') is-invalid @enderror" name="address" value="{{ old('first_name') }}" placeholder="MetaMask Wallet Address"  autocomplete="address" required autofocus>
+                                <input id="name" type="text"  max="42" min="42" class="form-control @error('first_name') is-invalid @enderror" name="address" value="{{ old('first_name') }}" placeholder="MetaMask Wallet Address"  autocomplete="address" required autofocus>
 
                                 @error('first_name')
                                     <span class="invalid-feedback" role="alert">
