@@ -11,6 +11,8 @@
   <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
   <!-- Favicon -->
   <link rel="icon" href="{{asset('public/assets/img/brand/favicon.png')}}" type="image/png">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ 
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
   <!-- Icons -->
@@ -204,27 +206,26 @@
               <table class="table align-items-center table-flush">
                 <thead class="thead-light">
                   <tr>
-                    <th scope="col">name</th>
                     <th scope="col">Address</th>
                     <th scope="col">Time</th>
                     <th scope="col">Bonus</th>
                   </tr>
                 </thead>
                 <tbody>
+                    @foreach($ref_get as $ref_gets)
                   <tr>
                     <th scope="row">
-                      argon
+                      {{$ref_gets->user->address}}
                     </th>
+                    
                     <td>
-                      0x77D709586Bd3DCa8F2b00064A78936B1c030273D
-                    </td>
-                    <td>
-                      5/7/2021
+                       {{$ref_gets->created_at->format('m/d/Y')}}
                     </td>
                     <td>
                       <i class="fas fa-arrow-up text-success mr-3"></i>500
                     </td>
                   </tr>
+                  @endforeach
                 </tbody>
               </table>
             </div>
@@ -252,50 +253,17 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Apply  Withdraw</h5><br>
-        <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+    <form method="post" id="sample_form" class="form-horizontal">
+          @csrf
     <input type="text" style="width:"10%";"  id="name" placeholder="Enter  Amount" name="name">
     <input type="text"  value="{{auth()->user()->id}}" style="display:none;" id="userid"  name="userid">
-<button type="submit" id="butsave" class="btn btn-sm btn-primary">Apply</button> 
+    <input type="text"  value="pending" style="display:none;" id="actionpen"  name="action1">
+    <input type="hidden" name="action" id="action" value="Add" />
+    <input type="hidden" name="hidden_id" id="hidden_id" />
+    <input type="submit" name="action_button" id="action_button" class="btn btn-sm btn-primary" value="Apply" />
+</form>
 </div>                       </div>
-<script>
- $(document).ready(function() {
-   
-    $('#butsave').on('click', function() {
-      var name = $('#name').val();
-      var userid = $('#userid').val();
-     
-      if(name!="" && userid!=""){
-        /*  $("#butsave").attr("disabled", "disabled"); */
-          $.ajax({
-              url: "/withdraw",
-              type: "POST",
-              data: {
-                  _token: $("#csrf").val(),
-                  type: 1,
-                  name: name,
-                  userid: userid,
-                  
-              },
-              cache: false,
-              success: function(dataResult){
-                  console.log(dataResult);
-                  var dataResult = JSON.parse(dataResult);
-                  if(dataResult.statusCode==200){
-                    window.location = "/home";				
-                  }
-                  else if(dataResult.statusCode==201){
-                     alert("Error occured !");
-                  }
-                  
-              }
-          });
-      }
-      else{
-          alert('Please fill all the field !');
-      }
-  });
-});
-</script>
+
                   </div>
                 
                 </div>
@@ -312,9 +280,9 @@
                  </div>
               </div>
             </div>
-            <div class="table-responsive">
+            <div  class="table-responsive">
               <!-- Projects table -->
-              <table class="table align-items-center table-flush">
+              <table  id="user_table" class=" table table-bordered table align-items-center table-flush">
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">Amount</th>
@@ -322,56 +290,94 @@
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">
-                      500
-                    </th>
-                    <td>
-                      4/5/2021
-                    </td>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <span class="mr-2 " >Success</span>
-                        <div>
-                          <div class="progress">
-                            <div class="progress-bar " role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
+               
               </table>
+              
             </div>
+            
           </div>
         </div>
       </div>
+      
+   <script>
+ 
+$(document).ready(function(){
+     $('#user_table').DataTable({
+  processing: true,
+  serverSide: true,
+  ajax: {
+   url: "{{ route('sample.index') }}",
+  },
+  columns: [
+   {data: 'name',name: 'name'},
+   {data: 'created_at',name: 'created_at'},
+   {data: 'action1',name:'action1'}
+  ]
+ });
+
+    if($('#action').val() == 'Add')
+  {
+   action_url = "{{ route('sample.store') }}";
+  }
+  $('#sample_form').on('submit', function(event){
+  event.preventDefault();
+  var action_url = '';
+
+  if($('#action').val() == 'Add')
+  {
+   action_url = "{{ route('sample.store') }}";
+  }
+  $.ajax({
+   url: action_url,
+   method:"POST",
+   data:$(this).serialize(),
+   dataType:"json",
+   success:function(data)
+   {
+    var html = '';
+    if(data.errors)
+    {
+     html += alert( data.errors);
+
+    }
+    if(data.success)
+    {
+     html = alert( data.success );
+     $('#sample_form')[0].reset();
+      $('#user_table').DataTable().ajax.reload();
+     }
+    $('#form_result').html(html);
+   }
+  });
+ });
+  
+});
+</script>
       <!-- Footer -->
       <footer class="footer pt-0">
         <div class="row align-items-center justify-content-lg-between">
-          <div class="col-lg-6">
-            <div class="copyright text-center  text-lg-left  text-muted">
+          <div class="col-lg-12">
+            <center><div style="margin-left:40%;"  class="copyright text-center  text-lg-left  text-muted">
               &copy; 2021 <a href="{{request()->getHttpHost()}}" class="font-weight-bold ml-1" target="_blank">Website name</a>
-            </div>
+            </div></center>
           </div>
-          <div class="col-lg-6">
-           
-          </div>
+         
         </div>
       </footer>
     </div>
   </div>
  <!-- Argon Scripts -->
   <!-- Core -->
+
   <script src="{{asset('public/assets/vendor/jquery/dist/jquery.min.js')}}"></script>
   <script src="{{asset('public/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
   <script src="{{asset('public/assets/vendor/js-cookie/js.cookie.js')}}"></script>
   <script src="{{asset('public/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js')}}"></script>
   <script src="{{asset('public/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js')}}"></script>
+  <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css" />
   <!-- Optional JS -->
   <script src="{{asset('public/assets/vendor/chart.js/dist/Chart.min.js')}}"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="{{asset('public/assets/vendor/chart.js/dist/Chart.extension.js')}}"></script>
   <!-- Argon JS -->
   <script src="{{asset('public/assets/js/argon.js?v=1.2.0')}}"></script>

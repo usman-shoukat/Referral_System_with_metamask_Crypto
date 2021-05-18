@@ -28,4 +28,16 @@ Route::post('/address/reset', 'Auth\LoginController@resetaddresssave')->name('re
 Route::get('/register/{ref}', 'Auth\RegisterController@getformsignupref')->name('form.signup.ref');
 Route::post('/signup/{ref}', 'Auth\RegisterController@signupref')->name('signup.ref');
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('/withdraw','WithdrawController');
+Route::resource('/sample','WithdrawController');
+
+
+
+
+
+//admin rote
+
+Route::get('/login/admin', 'Auth\LoginController@showAdminLoginForm');
+Route::get('/registeradmin', 'Auth\RegisterController@showAdminRegisterForm');
+Route::post('/login/admin', 'Auth\LoginController@adminLogin');
+Route::post('/register/admin', 'Auth\RegisterController@createAdmin');
+Route::get('/admin', 'AdminController@index');

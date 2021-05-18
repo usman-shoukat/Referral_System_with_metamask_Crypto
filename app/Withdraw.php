@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Withdraw extends Model
 {
     protected $fillable = [
-                'name', 'userid',
+                'name', 'userid','action1',
     ];
 }

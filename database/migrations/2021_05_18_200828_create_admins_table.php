@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWithdrawsTable extends Migration
+class CreateAdminsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateWithdrawsTable extends Migration
      */
     public function up()
     {
-        Schema::create('withdraws', function (Blueprint $table) {
-            $table->id();
-            $table->string('userid');
-            $table->string('name');
-            $table->string('action1');
-            $table->timestamps();
+        Schema::create('admins', function (Blueprint $table) {
+          $table->increments('id');
+          $table->string('email',191)->unique();
+          $table->timestamp('email_verified_at')->nullable();
+          $table->string('password');
+          $table->timestamps();
         });
     }
 
@@ -29,6 +29,6 @@ class CreateWithdrawsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('withdraws');
+        Schema::dropIfExists('admins');
     }
 }

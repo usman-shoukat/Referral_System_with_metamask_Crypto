@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use App\Referral;
+use App\Admin;
+
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -41,7 +43,22 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+              $this->middleware('guest:admin');
+
     }
+     public function showAdminRegisterForm()
+   {
+       return view('admin.register');
+   }
+    protected function createAdmin(Request $request)
+  {
+      $admin = Admin::create([
+          'name' => $request['name'],
+          'email' => $request['email'],
+          'password' => Hash::make($request['password']),
+      ]);
+      return redirect()->intended('login/admin');
+  }
 
     /**
      * Get a validator for an incoming registration request.

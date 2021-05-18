@@ -11,6 +11,6 @@ class Referral extends Model
     ];
     public function user()
     {
-        return $this->belongsTo(User::class, 'pick_id_of_ref','id');
+        return $this->belongsTo(User::class, 'pick_id_of_makeaccount','id');
     }
 }
