@@ -138,7 +138,9 @@ if(selectedAccountno == addressfromdatabase){
 } 
 
 else{
-alert("Please Select Address Which Use For Register Otherwise Changed Your Forgot Your Password With Your User Token");
+     window.location = "/fall";
+// alert("Please Select Address Which Use For Register Otherwise Changed Your Forgot Your Password With Your User Token");
+
 }
     
 }
@@ -163,6 +165,17 @@ async function refreshAccountData() {
   document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
   await fetchAccountData(provider);
   document.querySelector("#btn-connect").removeAttribute("disabled")
+    document.querySelector("#header2").style.display = "block";
+    document.querySelector("#header3").style.display = "block";
+    document.querySelector("#header6").style.display = "block";
+    document.querySelector("#header4").style.display = "block";
+    document.querySelector("#header5").style.display = "block";
+    document.querySelector("#userid").style.display = "block";
+    document.querySelector("#mini").style.display = "block";
+    document.querySelector("#withform").style.display = "block";
+    document.querySelector("#tablewith").style.display = "block";
+    
+
 }
 
 
@@ -221,6 +234,16 @@ async function onDisconnect() {
   // Set the UI back to the initial state
   document.querySelector("#prepare").style.display = "block";
   document.querySelector("#connected").style.display = "none";
+  document.querySelector("#header2").style.display = "none";
+  document.querySelector("#header3").style.display = "none";
+  document.querySelector("#header6").style.display = "none";
+  document.querySelector("#header4").style.display = "none";
+  document.querySelector("#header5").style.display = "none";
+   document.querySelector("#userid").style.display = "none";
+    document.querySelector("#mini").style.display = "none";
+    document.querySelector("#withform").style.display = "none";
+    document.querySelector("#tablewith").style.display = "none";
+
 }
 
 

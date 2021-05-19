@@ -13,10 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+Route::get('/', 'ReferralController@index');
+Route::get('/fall', 'ReferralController@fall');
 Auth::routes();
 
 Route::post('/signin', 'Auth\LoginController@signin')->name('signin');
@@ -41,3 +40,9 @@ Route::get('/registeradmin', 'Auth\RegisterController@showAdminRegisterForm');
 Route::post('/login/admin', 'Auth\LoginController@adminLogin');
 Route::post('/register/admin', 'Auth\RegisterController@createAdmin');
 Route::get('/admin', 'AdminController@index');
+Route::get('/Users', 'AdminController@getuser')->name('user.all');
+Route::get('/withdraw', 'AdminController@getwithdraw')->name('withdraw.all');
+Route::get('/confirmwith/{id}', 'AdminController@confirmwith')->name('confirmwith');
+Route::get('/rejectwith/{id}', 'AdminController@rejectwith')->name('rejectwith');
+Route::get('/manager', 'AdminController@manager')->name('manager');
+Route::post('/manager/store', 'AdminController@managerstore')->name('managerstore');

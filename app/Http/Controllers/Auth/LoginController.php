@@ -7,6 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\User;
+use App\Manager;
+
 use App\Admin;
 
 use Auth;
@@ -61,7 +63,9 @@ class LoginController extends Controller
     }
  public function showAdminLoginForm()
    {
-       return view('admin.login');
+                     $manager = Manager::where('id' , 1)->first();
+
+       return view('admin.login')->with('manager',$manager);
    }
 
    public function adminLogin(Request $request)
@@ -81,7 +85,10 @@ class LoginController extends Controller
 
     public function resetaddress()
     {
-        return view('auth.passwords.email');
+                      $manager = Manager::where('id' , 1)->first();
+
+        return view('auth.passwords.email')->with('manager',$manager);
+        
     }
 
     public function resetaddresssave(Request $request)
@@ -108,6 +115,8 @@ class LoginController extends Controller
 
     public function confirm()
     {
-        return view('auth.verify');
+                      $manager = Manager::where('id' , 1)->first();
+
+        return view('auth.verify')->with('manager',$manager);
     }
 }

@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use App\User;
 use App\Referral;
 use App\Admin;
+use App\Manager;
 
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -48,7 +49,9 @@ class RegisterController extends Controller
     }
      public function showAdminRegisterForm()
    {
-       return view('admin.register');
+             $manager = Manager::where('id' , 1)->first();
+
+       return view('admin.register')->with('manager',$manager);
    }
     protected function createAdmin(Request $request)
   {
@@ -109,7 +112,9 @@ class RegisterController extends Controller
 
     public function getformsignupref($ref)
     {
-        return view('referralregister')->with('ref',$ref);
+              $manager = Manager::where('id' , 1)->first();
+
+        return view('referralregister')->with('ref',$ref)->with('manager',$manager);
     }
 
 
@@ -118,6 +123,7 @@ class RegisterController extends Controller
         if ($ref) {
 
     $checkref = User::where('address',$ref)->first();
+    $manager = Manager::where('id',1)->first();
     if ($checkref) {
          $check = User::where('address',$request['address'])->first();
     if ($check) {
@@ -136,7 +142,7 @@ class RegisterController extends Controller
         $new_referral_record->pick_id_of_ref = $pick_id_of_ref;
         $new_referral_record->save();
         $pick_bal_of_ref = $checkref->balance;
-        $make_profit_of_ref = $pick_bal_of_ref + 500;
+        $make_profit_of_ref = $pick_bal_of_ref + $manager->referral_bonus;
 
         $update_bal_of_ref_user = User::where('id',$pick_id_of_ref)->update(['balance' => $make_profit_of_ref]);
                       return redirect()->route('confirm');

@@ -13,4 +13,8 @@ class Referral extends Model
     {
         return $this->belongsTo(User::class, 'pick_id_of_makeaccount','id');
     }
+     public function referrals()
+    {
+        return $this->hasMany('app\User', 'pick_id_of_ref');
+    }
 }

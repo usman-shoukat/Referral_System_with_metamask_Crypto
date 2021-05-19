@@ -1,88 +1,131 @@
-<!doctype html>
-<html class="no-js" lang="en">
+@extends('layouts.admin')
 
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Redix Experts</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" href="apple-touch-icon.html">
-    <!-- Place favicon.ico in the root directory -->
-    <link rel="stylesheet" href="{{asset('public/css/vendor.css')}}">
-    <link rel="stylesheet"  href="{{asset('public/css/app.css')}}">
-    <link rel="stylesheet"  href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
-    <div class="main-wrapper">
-        <div class="app" id="app">
-            <header class="header">
-                <div class="header-block header-block-collapse d-lg-none d-xl-none">
-                    <button class="collapse-btn" id="sidebar-collapse-btn">
-                        <i class="fa fa-bars"></i>
-                    </button>
+   @section('content')
+                       
+       <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <br><br>
+          <!-- Card stats -->
+          <div class="row">
+            <div class="col-xl-3 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total Website Balance</h5>
+                      <span class="h2 font-weight-bold mb-0">{{$balance}} {{$manager->currency_name}}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
+                        <i class="ni ni-active-40"></i>
+                      </div>
+                    </div>
+                  </div>
+                 
                 </div>
-                <div class="header-block header-block-nav">
-                    <ul class="nav-profile">
-                        <li class="notifications new">
-                            <a href="#" data-toggle="dropdown">
-                                <i class="fa fa-bell-o"></i>
-                                <sup>
-                                    <span class="counter">8</span>
-                                </sup>
-                            </a>
-                            <div class="dropdown-menu notifications-dropdown-menu">
-                                <ul class="notifications-container">
-                                    <li>
-                                        <a href="#" class="notification-item">
-                                            <div class="img-col">
-                                                <div class="img" style="background-image: url('assets/faces/3.jpg')"></div>
-                                            </div>
-                                            <div class="body-col">
-                                                <p>
-                                                    <span class="accent">Zack Alien</span> pushed new commit:
-                                                    <span class="accent">Fix page load performance issue</span>. </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="profile dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                <div class="img" style="background-image: url('https://avatars3.githubusercontent.com/u/3959008?v=3&amp;s=40')"> </div>
-                                <span class="name"> John Doe </span>
-                            </a>
-                            <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item"  href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
-                                    <i class="fa fa-power-off icon"></i> Logout </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-
-                            </div>
-                        </li>
-                    </ul>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0"> users</h5>
+                      <span class="h2 font-weight-bold mb-0">{{$user}} </span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
+                        <i class="ni ni-chart-pie-35"></i>
+                      </div>
+                    </div>
+                  </div>
+                 
                 </div>
-            </header>
-            
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total Withdraw</h5>
+                      <span class="h2 font-weight-bold mb-0">{{$withdraw}} {{$manager->currency_name}}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+                        <i class="ni ni-money-coins"></i>
+                      </div>
+                    </div>
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Each Withdraw Profit</h5>
+                      <span class="h2 font-weight-bold mb-0">{{$manager->referral_bonus}} {{$manager->currency_name}}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
+                        <i class="ni ni-chart-bar-32"></i>
+                      </div>
+                    </div>
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+      
+      <div class="row">
+        
+        <div class="col-xl-4">
+          <div class="card">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="mb-0">Top 10 Referral User</h3>
+                </div>
+                <div class="col text-right">
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <!-- Projects table -->
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Referral Address</th>
+                    <th scope="col">Total Referral</th>
+                    <th scope="col">Total Bonus</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                      <td>                   not fount right now
+</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
 
-
-
-<script src="{{asset('public/js/vendor.js')}}"></script>
-<script src="{{asset('public/js/app.js')}} "></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js "></script>
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
-</body>
-
-</html>
+   @endsection

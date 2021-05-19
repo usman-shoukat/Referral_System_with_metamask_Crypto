@@ -8,7 +8,7 @@
   <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
   <meta name="author" content="Creative Tim">
   <meta name="auth-check" content="{{ (Auth::user()->address) }}">
-  <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
+  <title>{{$manager->website_title}}</title>
   <!-- Favicon -->
   <link rel="icon" href="{{asset('public/assets/img/brand/favicon.png')}}" type="image/png">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -31,7 +31,7 @@
           <div class="row align-items-center py-4">
             <div class="col-lg-6 col-7">
  <a  class="navbar-brand" href="javascript:void(0)">
-          <img src="public/assets/img/brand/white.png" width="100px;" class="navbar-brand-img" alt="...">
+          <img src="public/assets/img/brand/{{$manager->logo}}" width="100px;" class="navbar-brand-img" alt="...">
         </a>             
        </div>
        
@@ -48,38 +48,40 @@
                                     </form>
               
               
+            </li><li class="nav-item ">
+              <a class="nav-link pr-0" style="color: white;"     >
+                  <span>User Token: {{auth()->user()->id}}</span>
+                </a>
+                 
+              
+              
             </li>
             
              
 
           </ul>            </div>
           </div>
-           <nav id="prepare" style="width:20%; cursor: pointer;"   aria-label="breadcrumb" class="  ">
-                <ol   class="breadcrumb breadcrumb-links breadcrumb-dark">
-                  <li class="breadcrumb-item"><a href="#" ><i class="fas fa-link"></i></a></li>
-                  <li class="breadcrumb-item" id="btn-connect"><a >Connect Wallet</a></li>
+           <nav  id="prepare" style="width:20%; cursor: pointer;"   class="  ">
+                  <button class="btn btn-primary" id="btn-connect"><a >Connect Wallet</a></button>
 
-                </ol>
-                
+
               </nav>
-               <nav   id="connected"  style="display: none;width:25%; cursor: pointer;" aria-label="breadcrumb" class="  ">
-               <ol      class="breadcrumb breadcrumb-links breadcrumb-dark">
-                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-link"></i></a></li>
-                  <li class="breadcrumb-item" id="btn-disconnect"><a >Disconnect Wallet</a></li>
+               <!--User Token "{{auth()->user()->id}}"-->
+               <nav   id="connected"  style="display: none;width:25%; cursor: pointer;" class="  ">
+                  <button class="btn btn-primary"  id="btn-disconnect"><a >Disconnect Wallet</a></button><br>
 
-                </ol>
                 </nav>
-               
+               <br>
           <!-- Card stats -->
-          <div class="row">
-            <div class="col-xl-3 col-md-6">
+          <div class="row" >
+            <div class="col-xl-3 col-md-6" id="header2" style="display: none;">
               <div class="card card-stats">
                 <!-- Card body -->
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Total Balance</h5>
-                      <span class="h2 font-weight-bold mb-0">{{auth()->user()->balance}}</span>
+                      <span class="h2 font-weight-bold mb-0">{{auth()->user()->balance}} {{$manager->currency_name}}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
@@ -91,14 +93,14 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-md-6">
+            <div class="col-xl-3 col-md-6" id="header6" style="display: none;">
               <div class="card card-stats">
                 <!-- Card body -->
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Total Referrals</h5>
-                      <span class="h2 font-weight-bold mb-0">2,356</span>
+                      <span class="h2 font-weight-bold mb-0">{{$reftotal}}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -110,14 +112,14 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-md-6">
+            <div class="col-xl-3 col-md-6" id="header4" style="display: none;">
               <div class="card card-stats">
                 <!-- Card body -->
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Total Withdraw</h5>
-                      <span class="h2 font-weight-bold mb-0">924</span>
+                      <span class="h2 font-weight-bold mb-0">{{auth()->user()->withdraw}} {{$manager->currency_name}}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -129,14 +131,14 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-md-6">
+            <div class="col-xl-3 col-md-6" id="header5" style="display: none;">
               <div class="card card-stats">
                 <!-- Card body -->
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Referral Bonus</h5>
-                      <span class="h2 font-weight-bold mb-0">49,65%</span>
+                      <span class="h2 font-weight-bold mb-0">{{$manager->referral_bonus}} </span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow">
@@ -153,9 +155,9 @@
       </div>
     </div>
     <!-- Page content -->
-    <div class="container-fluid mt--6">
+    <div class="container-fluid mt--6" >
       <div class="row">
-        <div class="col-xl-8">
+        <div class="col-xl-12" id="userid" style="display: none;">
           <div class="card bg-default">
             <div class="card-header bg-transparent">
               <div class="row align-items-center">
@@ -174,23 +176,23 @@
                 </div>
               </div>
             </div>
-            <div  class="card-body" id="accounts">
-            <div id="templates" style="display: none">
-      <template  id="template-balance">
-        <tr>
-          <th class="address"></th>
-          <td class="balance"></td>
-        </tr>
-      </template>
-    </div>
+            <div  class="card-body" >
+    <!--        <div id="templates" style="display: none">-->
+    <!--  <template style="display: none"  id="template-balance">-->
+    <!--    <tr>-->
+    <!--      <th id="adresschecker" class="address"></th>-->
+    <!--      <td class="balance"></td>-->
+    <!--    </tr>-->
+    <!--  </template>-->
+    <!--</div>-->
         <h5 class="h3 text-white mb-0">{{request()->getHttpHost()}}/register/{{auth()->user()->address}}</h5>
             </div>
-          </div>
+          </div
         </div>
-       
-      </div>
+      
+      </div></div>
       <div class="row">
-        <div class="col-xl-8">
+        <div class="col-xl-12" id="header3" style="display: none;">
           <div class="card">
             <div class="card-header border-0">
               <div class="row align-items-center">
@@ -222,7 +224,7 @@
                        {{$ref_gets->created_at->format('m/d/Y')}}
                     </td>
                     <td>
-                      <i class="fas fa-arrow-up text-success mr-3"></i>500
+                      <i class="fas fa-arrow-up text-success mr-3"></i>{{$manager->referral_bonus}}  
                     </td>
                   </tr>
                   @endforeach
@@ -230,15 +232,16 @@
               </table>
             </div>
           </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
+        </div></div>
+        <div class="row">
+        <div class=" col-md-6" id="mini" style="display: none;">
               <div class="card card-stats">
                 <!-- Card body -->
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Total Balance For Withdraw</h5><br>
-                      <span class="h2 font-weight-bold mb-0">{{auth()->user()->balance}}</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Minimum Withdraw</h5><br>
+                      <span class="h2 font-weight-bold mb-0">{{$manager->minimum_withdraw}} {{$manager->currency_name}} </span>
                     </div>
                     
                   </div>
@@ -246,7 +249,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-md-6">
+            <div class=" col-md-6" id="withform" style="display: none;">
               <div class="card card-stats">
                 <!-- Card body -->
                 <div class="card-body">
@@ -260,7 +263,12 @@
     <input type="text"  value="pending" style="display:none;" id="actionpen"  name="action1">
     <input type="hidden" name="action" id="action" value="Add" />
     <input type="hidden" name="hidden_id" id="hidden_id" />
+    @if(auth()->user()->balance >= $manager->minimum_withdraw)
     <input type="submit" name="action_button" id="action_button" class="btn btn-sm btn-primary" value="Apply" />
+    @else
+        <a style="color:white;" disabled class="btn btn-sm btn-primary"> <--See Minimum  </a>
+
+    @endif
 </form>
 </div>                       </div>
 
@@ -268,9 +276,10 @@
                 
                 </div>
               </div>
-            </div>
-        <div class="col-xl-4">
-          <div class="card">
+              </div>
+              <div class="row" >
+               <div class="col-xl-8" >
+          <div class="card" id="tablewith" style="display: none;">
             <div class="card-header border-0">
               <div class="row align-items-center">
                 <div class="col">
@@ -297,8 +306,11 @@
             
           </div>
         </div>
+        </div>
+            
+       
       </div>
-      
+      </div>
    <script>
  
 $(document).ready(function(){
@@ -309,7 +321,7 @@ $(document).ready(function(){
    url: "{{ route('sample.index') }}",
   },
   columns: [
-   {data: 'name',name: 'name'},
+   {data: 'name',name : 'name'},
    {data: 'created_at',name: 'created_at'},
    {data: 'action1',name:'action1'}
   ]
@@ -353,19 +365,12 @@ $(document).ready(function(){
   
 });
 </script>
+
       <!-- Footer -->
-      <footer class="footer pt-0">
-        <div class="row align-items-center justify-content-lg-between">
-          <div class="col-lg-12">
-            <center><div style="margin-left:40%;"  class="copyright text-center  text-lg-left  text-muted">
-              &copy; 2021 <a href="{{request()->getHttpHost()}}" class="font-weight-bold ml-1" target="_blank">Website name</a>
+     <center><div style="margin-left:40%;"  class="copyright text-center  text-lg-left  text-muted">
+              &copy; 2021 <a href="/" class="font-weight-bold ml-1" target="_blank">{{$manager->website_title}}</a>
             </div></center>
-          </div>
-         
-        </div>
-      </footer>
-    </div>
-  </div>
+   
  <!-- Argon Scripts -->
   <!-- Core -->
 
