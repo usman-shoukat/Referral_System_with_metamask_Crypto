@@ -167,15 +167,17 @@
                 <div class="col">
                   <ul class="nav nav-pills justify-content-end">
                     <li class="nav-item mr-2 mr-md-0" >
-                      <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
-                        <span class="d-none d-md-block"> User Token "{{auth()->user()->id}}" </span>
-                        <span class="d-md-none"> User Token "{{auth()->user()->id}}" </span>
-                      </a>
+                      <button alt="Copy to clipboard"  onclick="copyToClipboard('text_element')" class="nav-link py-2 px-3 active" data-toggle="tab">
+                        <span class="d-none d-md-block"> Copy </span>
+                        <span class="d-md-none"> Copy </span>
+                      </button>
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
+            
+           
             <div  class="card-body" >
     <!--        <div id="templates" style="display: none">-->
     <!--  <template style="display: none"  id="template-balance">-->
@@ -185,7 +187,7 @@
     <!--    </tr>-->
     <!--  </template>-->
     <!--</div>-->
-        <h5 class="h3 text-white mb-0">{{request()->getHttpHost()}}/register/{{auth()->user()->address}}</h5>
+        <h5 class="h3 text-white mb-0" id="text_element">{{request()->getHttpHost()}}/register/{{auth()->user()->address}}</h5>
             </div>
           </div
         </div>
@@ -194,6 +196,7 @@
       <div class="row">
         <div class="col-xl-12" id="header3" style="display: none;">
           <div class="card">
+              
             <div class="card-header border-0">
               <div class="row align-items-center">
                 <div class="col">
@@ -217,14 +220,14 @@
                     @foreach($ref_get as $ref_gets)
                   <tr>
                     <th scope="row">
-                      {{$ref_gets->user->address}}
+                      {{$ref_gets->user->address ?? ''}}
                     </th>
                     
                     <td>
-                       {{$ref_gets->created_at->format('m/d/Y')}}
+                       {{$ref_gets->created_at->format('m/d/Y') ?? ''}}
                     </td>
                     <td>
-                      <i class="fas fa-arrow-up text-success mr-3"></i>{{$manager->referral_bonus}}  
+                      <i class="fas fa-arrow-up text-success mr-3"></i>{{$manager->referral_bonus ?? ''}}  
                     </td>
                   </tr>
                   @endforeach
@@ -295,7 +298,7 @@
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">Amount</th>
-                    <th scope="col">Time</th>
+                    <th scope="col">Address</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -308,7 +311,8 @@
         </div>
         </div>
             
-       
+          <!--{data: 'created_at',name:'created_at'}-->
+
       </div>
       </div>
    <script>
@@ -322,7 +326,7 @@ $(document).ready(function(){
   },
   columns: [
    {data: 'name',name : 'name'},
-   {data: 'created_at',name: 'created_at'},
+   {data: 'user.address',name: 'user.address'},
    {data: 'action1',name:'action1'}
   ]
  });
@@ -352,6 +356,12 @@ $(document).ready(function(){
      html += alert( data.errors);
 
     }
+     if(data.erors)
+    {
+     html = alert( data.erors);
+     $('#sample_form')[0].reset();
+
+    }
     if(data.success)
     {
      html = alert( data.success );
@@ -365,7 +375,23 @@ $(document).ready(function(){
   
 });
 </script>
+ <script>
+ 
+ function copyToClipboard(elementId) {
+var aux = document.createElement("input");
+aux.setAttribute("value", document.getElementById(elementId).innerHTML);
+document.body.appendChild(aux);
+aux.select();
+document.execCommand("copy");
+document.body.removeChild(aux);
 
+     
+ }
+function log() {
+console.log('---')
+}
+
+</script>
       <!-- Footer -->
      <center><div style="margin-left:40%;"  class="copyright text-center  text-lg-left  text-muted">
               &copy; 2021 <a href="/" class="font-weight-bold ml-1" target="_blank">{{$manager->website_title}}</a>

@@ -98,7 +98,9 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-wallet"></i></span>
                     </div>
- <input id="email" max="42" min="42" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" required autocomplete="address" placeholder="MetaMask Wallet Address" autofocus>                     @error('first_name')
+ <input id="email" max="42" min="42" class="form-control @error('first_name') is-invalid @enderror" name="address"
+ value="{{ old('address') }}" required autocomplete="address" placeholder="MetaMask Wallet Address" autofocus>
+ @error('first_name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

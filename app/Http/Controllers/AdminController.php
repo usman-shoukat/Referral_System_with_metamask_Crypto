@@ -50,7 +50,7 @@ class AdminController extends Controller
      $getbaluser = $getbal->balance;
      $minuswithdraw = $getbaluser - $withdrawbal->name; 
      $withdrawbaladd = $getbal->withdraw + $withdrawbal->name; 
-     $update = User::where('id' ,$ueridd)->update(['balance' => $minuswithdraw , 'withdraw' => $withdrawbaladd]);
+     $update = User::where('id' ,$ueridd)->update(['withdraw' => $withdrawbaladd]);
       
       $withdraw = Withdraw::where('id' ,$id)->update(['action1' => "confirm"]);
      
@@ -58,6 +58,13 @@ class AdminController extends Controller
   }
     public function rejectwith($id)
   {
+       $withdrawbal = Withdraw::where('id' ,$id)->first();
+     $ueridd = $withdrawbal->userid;
+     $getbal = User::where('id' ,$ueridd)->first();
+     $getbaluser = $getbal->balance;
+     $minuswithdraw = $getbaluser + $withdrawbal->name;
+    $update = User::where('id' ,$ueridd)->update(['balance' => $minuswithdraw]);
+
       $withdraw = Withdraw::where('id' ,$id)->update(['action1' => "reject"]);
      
       return redirect()->back();

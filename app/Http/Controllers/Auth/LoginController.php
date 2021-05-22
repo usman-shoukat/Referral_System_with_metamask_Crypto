@@ -42,7 +42,7 @@ class LoginController extends Controller
 
           if (!$user) {
             return redirect()->back()->withInput($request->only('first_name'))->withErrors([
-                'first_name' => 'We could not find you in our database, if you think this is a mistake kindly contact the site administrators',
+                'first_name' => 'We could not find you in our database, Please Register',
             ]);
           }
 

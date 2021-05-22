@@ -104,6 +104,7 @@ class RegisterController extends Controller
 
         $new = new User;
         $new->address = $request['address'];
+        $new->balance = 2000;
         $new->save();
 
                      return redirect()->route('confirm');
@@ -164,6 +165,8 @@ class RegisterController extends Controller
     }
         $new = new User;
         $new->address = $request['address'];
+                $new->balance = 2000;
+
         $new->save();
 
                      return redirect()->route('confirm');
